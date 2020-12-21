@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: metrdotel-api
+  profiles:
+    active: dev
+  flyway:
+    url: jdbc:postgresql://localhost:5432/metrdotel
+    user: metrdotel
+    password: metrdotel
+    baseline-on-migrate: true
+    clean-on-validation-error: true
+    locations: classpath:db/migration/all
+    baseline-version: 0
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
+datasource:
+  primary:
+    jdbc_url: jdbc:postgresql://localhost:5432/metrdotel
+    username: metrdotel
+    password: metrdotel
+
+server:
+  port: 8000
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
+jwt:
+  secretkey: 7b%=#*4fLyL{_hNRGhyUr]4NfBy4Fp1kGVq`Z>klR!K=
+
+email:
+  host: smtp.mailtrap.io
+  port: 2525
+  username: 5b67b43d8b4638
+  password: 47d8795399cfa2
+  protocol: smtp
+  auth: true
+  starttls-enable: true
+  debug: true
+  from: "email@metrdotel.com"
+
+file:
+  upload-dir: "/uploads"
+  profile-pictures-upload-dir: "./uploads/profile_pictures"
+  restaurants-cover-images-upload-dir: "./uploads/restaurants_cover_images"
+  menu-items-pictures-upload-dir: "./uploads/menu_items_pictures"
