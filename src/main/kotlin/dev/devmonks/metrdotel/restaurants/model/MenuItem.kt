@@ -1,5 +1,6 @@
 package dev.devmonks.metrdotel.restaurants.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 
 data class MenuItem (
@@ -10,6 +11,8 @@ data class MenuItem (
         val price: Double,
         val description: String,
         val types: List<String>,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
         val createdAt: LocalDateTime,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
         val updatedAt: LocalDateTime,
         )

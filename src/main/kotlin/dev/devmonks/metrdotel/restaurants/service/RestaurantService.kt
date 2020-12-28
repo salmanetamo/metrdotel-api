@@ -37,7 +37,7 @@ class RestaurantService @Autowired constructor(
         if (restaurant !== null) {
             return restaurant
         }
-        throw EntityNotFoundException(Restaurant::class.java, id)
+        throw EntityNotFoundException(Restaurant::class.java, "id", id)
     }
 
     override fun updateRestaurant(id: String, restaurantRequest: RestaurantRequest): Boolean {

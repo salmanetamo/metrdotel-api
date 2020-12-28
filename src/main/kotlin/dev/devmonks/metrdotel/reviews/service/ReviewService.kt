@@ -44,7 +44,7 @@ class ReviewService @Autowired constructor(private val reviewRepository: IReview
         if (review !== null) {
             return review
         }
-        throw EntityNotFoundException(Review::class.java, id)
+        throw EntityNotFoundException(Review::class.java, "id", id)
     }
 
     override fun updateReview(id: String, userId: String, reviewRequest: ReviewRequest): Boolean {

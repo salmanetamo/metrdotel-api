@@ -46,7 +46,7 @@ class ReservationService @Autowired constructor(private val reservationRepositor
         if (reservation !== null) {
             return reservation
         }
-        throw EntityNotFoundException(Reservation::class.java, id)
+        throw EntityNotFoundException(Reservation::class.java, "id", id)
     }
 
     override fun updateReservation(id: String, userId: String, reservationRequest: ReservationRequest): Boolean {

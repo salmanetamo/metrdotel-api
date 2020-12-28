@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -38,7 +39,7 @@ class RegistrationController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/signup")
-    fun signup(@RequestBody payload: SignupRequest): ResponseEntity<*> {
+    fun signup(@RequestBody @Valid payload: SignupRequest): ResponseEntity<*> {
         try {
             val userCreated = this.userService.createUser(
                     firstName = payload.firstName,
@@ -163,7 +164,7 @@ class RegistrationController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/reset-password")
-    fun resetPassword(@RequestParam token: String, @RequestBody payload: PasswordResetRequest): ResponseEntity<*> {
+    fun resetPassword(@RequestParam token: String, @RequestBody @Valid payload: PasswordResetRequest): ResponseEntity<*> {
         try {
             if (this.userService.verifyPasswordResetToken(token)) {
                 this.userService.resetPassword(payload.email, payload.password)

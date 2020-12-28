@@ -52,7 +52,7 @@ class UserService @Autowired constructor(
     override fun getUserByEmail(email: String): User {
         val user = this.userRepository.getUserByEmail(email)
         if (user === null) {
-            throw EntityNotFoundException(User::class.java, email)
+            throw EntityNotFoundException(User::class.java, "email", email)
         }
         return user
     }
@@ -60,7 +60,7 @@ class UserService @Autowired constructor(
     override fun getUserById(id: String): User {
         val user = this.userRepository.getUserById(id)
         if (user === null) {
-            throw EntityNotFoundException(User::class.java, id)
+            throw EntityNotFoundException(User::class.java, "id", id)
         }
         return user
     }

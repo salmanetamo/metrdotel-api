@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import javax.validation.Valid
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -31,7 +32,7 @@ class MenuController @Autowired constructor(private val menuService: IMenuServic
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/{restaurantId}")
-    fun createMenuItem(@RequestBody payload: MenuItemRequest, @PathVariable restaurantId: String): ResponseEntity<*> {
+    fun createMenuItem(@RequestBody @Valid payload: MenuItemRequest, @PathVariable restaurantId: String): ResponseEntity<*> {
         logger.info("Create new menu item request...")
         return ResponseEntity(this.menuService.createMenuItem(payload, restaurantId), HttpStatus.CREATED)
     }
@@ -85,7 +86,7 @@ class MenuController @Autowired constructor(private val menuService: IMenuServic
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PutMapping("/{id}")
-    fun updateMenuItem(@PathVariable id: String, @RequestBody payload: MenuItemRequest): ResponseEntity<*> {
+    fun updateMenuItem(@PathVariable id: String, @RequestBody @Valid payload: MenuItemRequest): ResponseEntity<*> {
         logger.info("Update menu item request...")
         return ResponseEntity(this.menuService.updateMenuItem(id, payload), HttpStatus.OK)
     }

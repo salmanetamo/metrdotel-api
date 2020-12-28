@@ -1,5 +1,6 @@
 package dev.devmonks.metrdotel.reviews.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDateTime
 
 data class Review (
@@ -8,6 +9,8 @@ data class Review (
         val reviewerId: String,
         val comment: String,
         val rating: Int,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
         val createdAt: LocalDateTime,
-        val updatedAt: LocalDateTime
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+        val updatedAt: LocalDateTime,
         )

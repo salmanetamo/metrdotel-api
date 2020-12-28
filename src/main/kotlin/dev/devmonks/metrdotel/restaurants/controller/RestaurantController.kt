@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import javax.validation.Valid
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -31,7 +32,7 @@ class RestaurantController @Autowired constructor(private val restaurantService:
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("")
-    fun createRestaurant(@RequestBody payload: RestaurantRequest): ResponseEntity<*> {
+    fun createRestaurant(@RequestBody @Valid payload: RestaurantRequest): ResponseEntity<*> {
         logger.debug("Create new restaurant request...")
         return ResponseEntity(this.restaurantService.createRestaurant(payload), HttpStatus.CREATED)
     }
@@ -72,7 +73,7 @@ class RestaurantController @Autowired constructor(private val restaurantService:
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PutMapping("/{id}")
-    fun updateRestaurant(@PathVariable id: String, @RequestBody payload: RestaurantRequest): ResponseEntity<*> {
+    fun updateRestaurant(@PathVariable id: String, @RequestBody @Valid payload: RestaurantRequest): ResponseEntity<*> {
         logger.debug("Update restaurant request...")
         return ResponseEntity(this.restaurantService.updateRestaurant(id, payload), HttpStatus.OK)
     }
@@ -109,6 +110,5 @@ class RestaurantController @Autowired constructor(private val restaurantService:
         logger.debug("Delete restaurant request...")
         return ResponseEntity(this.restaurantService.deleteRestaurant(id), HttpStatus.OK)
     }
-
 
 }

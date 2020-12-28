@@ -1,6 +1,7 @@
 package dev.devmonks.metrdotel.error.handler
 
 import com.auth0.jwt.exceptions.JWTVerificationException
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import dev.devmonks.metrdotel.error.error.ApiError
 import dev.devmonks.metrdotel.error.exception.EntityNotFoundException
 import lombok.extern.slf4j.Slf4j
@@ -29,6 +30,7 @@ import java.util.function.Consumer
 import javax.validation.ConstraintViolationException
 
 import org.springframework.http.HttpStatus.*
+import org.springframework.validation.FieldError
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -79,6 +81,29 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         apiError.message = "Validation error"
         apiError.addValidationErrors(ex.bindingResult.fieldErrors)
         apiError.addValidationError(ex.bindingResult.globalErrors)
+        return buildResponseEntity(apiError)
+    }
+
+    /**
+     * Handle MissingKotlinParameterException. Triggered when an object is missing a non-nullable field needed for instantiation.
+     *
+     * @param ex      the MissingKotlinParameterException that is thrown when a non-nullable field is missing
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
+     * @return the ApiError object
+     */
+    @ExceptionHandler(MissingKotlinParameterException::class)
+    fun handleMissingKotlinParameter(ex: MissingKotlinParameterException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
+        val apiError = ApiError(BAD_REQUEST)
+        apiError.message = "Validation error"
+        apiError.debugMessage = ex.message
+        val errorFieldRegex = Regex("\\.([^.]*)\\[\\\"(.*)\"\\]\$")
+        val errorMatch = errorFieldRegex.find(ex.path[0].description)!!
+        val (objectName, field) = errorMatch.destructured
+        apiError.addValidationErrors(mutableListOf(
+                FieldError(objectName, field, "must not be null")
+        ))
         return buildResponseEntity(apiError)
     }
 
@@ -144,6 +169,10 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         val servletWebRequest = request as ServletWebRequest
         logger.info("${servletWebRequest.httpMethod} to ${servletWebRequest.request.servletPath}")
         val error = "Malformed JSON request"
+
+        if (ex.cause !== null && ex.cause is MissingKotlinParameterException) {
+            return this.handleMissingKotlinParameter(ex.cause as MissingKotlinParameterException, headers, status, request)
+        }
         return buildResponseEntity(ApiError(BAD_REQUEST, error, ex))
     }
 

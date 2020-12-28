@@ -1,5 +1,6 @@
 package dev.devmonks.metrdotel.restaurants.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import dev.devmonks.metrdotel.orders.model.Order
 import dev.devmonks.metrdotel.reservations.model.Reservation
 import dev.devmonks.metrdotel.reviews.model.Review
@@ -19,6 +20,8 @@ data class Restaurant(
         val orders: List<Order>,
         val reservations: List<Reservation>,
         val location: Location,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
         val createdAt: LocalDateTime,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
         val updatedAt: LocalDateTime,
 )

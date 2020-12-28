@@ -44,7 +44,7 @@ class VisitService @Autowired constructor(private val visitRepository: IVisitRep
         if (visit !== null) {
             return visit
         }
-        throw EntityNotFoundException(Visit::class.java, id)
+        throw EntityNotFoundException(Visit::class.java, "id", id)
     }
 
     override fun updateVisit(id: String, userId: String, visitRequest: VisitRequest): Boolean {

@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -38,7 +39,7 @@ class OrderController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/{restaurantId}")
-    fun createOrder(@RequestBody payload: OrderRequest, @PathVariable restaurantId: String): ResponseEntity<*> {
+    fun createOrder(@RequestBody @Valid payload: OrderRequest, @PathVariable restaurantId: String): ResponseEntity<*> {
         logger.info("Create new order request...")
         return ResponseEntity(
                 this.orderService.createOrder(
@@ -101,7 +102,7 @@ class OrderController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PutMapping("/{id}")
-    fun updateOrder(@PathVariable id: String, @RequestBody payload: OrderRequest): ResponseEntity<*> {
+    fun updateOrder(@PathVariable id: String, @RequestBody @Valid payload: OrderRequest): ResponseEntity<*> {
         logger.info("Update order request...")
         return ResponseEntity(
                 this.orderService.updateOrder(
@@ -137,7 +138,7 @@ class OrderController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/items/{orderId}")
-    fun createOrderItem(@RequestBody payload: OrderItemRequest, @PathVariable orderId: String): ResponseEntity<*> {
+    fun createOrderItem(@RequestBody @Valid payload: OrderItemRequest, @PathVariable orderId: String): ResponseEntity<*> {
         logger.info("Create new order item request...")
         return ResponseEntity(this.orderService.createOrderItem(payload, orderId), HttpStatus.CREATED)
     }
@@ -191,7 +192,7 @@ class OrderController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PutMapping("/items/{id}")
-    fun updateOrderItem(@PathVariable id: String, @RequestBody payload: OrderItemRequest): ResponseEntity<*> {
+    fun updateOrderItem(@PathVariable id: String, @RequestBody @Valid payload: OrderItemRequest): ResponseEntity<*> {
         logger.info("Update order item request...")
         return ResponseEntity(this.orderService.updateOrderItem(id, payload), HttpStatus.OK)
     }

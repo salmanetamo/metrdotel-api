@@ -15,8 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.bind.annotation.*
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import javax.validation.Valid
 
 
 @CrossOrigin(origins = ["*"])
@@ -38,8 +37,8 @@ class AuthenticationController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/login")
-    fun login(@RequestBody payload: LoginRequest, request: HttpServletRequest, response: HttpServletResponse): ResponseEntity<*> {
-        logger.debug("request is $request")
+    fun login(@RequestBody @Valid payload: LoginRequest): ResponseEntity<*> {
+        logger.debug("login user is ${payload.email}")
         try {
             val loggedInUser = this.authenticationService.login(payload.email, payload.password)
             return loggedInUser?.let {

@@ -55,7 +55,7 @@ class OrderService @Autowired constructor(private val orderRepository: IOrderRep
         if (order !== null) {
             return order
         }
-        throw EntityNotFoundException(Order::class.java, id)
+        throw EntityNotFoundException(Order::class.java, "id", id)
     }
 
     override fun updateOrder(id: String, userId: String, orderRequest: OrderRequest): Boolean {
@@ -114,7 +114,7 @@ class OrderService @Autowired constructor(private val orderRepository: IOrderRep
         if (orderItem !== null) {
             return orderItem
         }
-        throw EntityNotFoundException(OrderItem::class.java, id)
+        throw EntityNotFoundException(OrderItem::class.java, "id", id)
     }
 
     override fun updateOrderItem(id: String, orderItemRequest: OrderItemRequest): Boolean {

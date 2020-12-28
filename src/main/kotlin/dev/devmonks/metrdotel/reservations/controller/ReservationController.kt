@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @CrossOrigin(origins = ["*"])
 @RestController
@@ -34,7 +35,7 @@ class ReservationController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PostMapping("/{restaurantId}")
-    fun createReservation(@RequestBody payload: ReservationRequest, @PathVariable restaurantId: String): ResponseEntity<*> {
+    fun createReservation(@RequestBody @Valid payload: ReservationRequest, @PathVariable restaurantId: String): ResponseEntity<*> {
         logger.debug("Create new reservation request...")
         return ResponseEntity(this.reservationService.createReservation(
                 payload,
@@ -109,7 +110,7 @@ class ReservationController @Autowired constructor(
         ApiResponse(code = 500, message = "Internal server error")
     ])
     @PutMapping("/{id}")
-    fun updateReservation(@PathVariable id: String, @RequestBody payload: ReservationRequest): ResponseEntity<*> {
+    fun updateReservation(@PathVariable id: String, @RequestBody @Valid payload: ReservationRequest): ResponseEntity<*> {
         logger.debug("Update reservation request...")
         return ResponseEntity(
                 this.reservationService.updateReservation(
@@ -136,6 +137,4 @@ class ReservationController @Autowired constructor(
         logger.debug("Delete reservation request...")
         return ResponseEntity(this.reservationService.deleteReservation(id), HttpStatus.OK)
     }
-
-
 }

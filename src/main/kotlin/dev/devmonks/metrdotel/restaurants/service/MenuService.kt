@@ -45,7 +45,7 @@ class MenuItemService @Autowired constructor(
         if (menuItem !== null) {
             return menuItem
         }
-        throw EntityNotFoundException(MenuItem::class.java, id)
+        throw EntityNotFoundException(MenuItem::class.java, "id", id)
     }
 
     override fun updateMenuItem(id: String, menuItemRequest: MenuItemRequest): Boolean {

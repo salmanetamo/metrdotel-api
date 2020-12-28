@@ -47,17 +47,17 @@ class ApiError private constructor() {
 
     private fun addSubError(subError: ApiSubError) {
         if (subErrors == null) {
-            subErrors = ArrayList()
+            subErrors = mutableListOf()
         }
         subErrors!!.add(subError)
     }
 
     private fun addValidationError(`object`: String, field: String, rejectedValue: Any?, message: String?) {
-        addSubError(ApiValidationError(`object`, field, message, rejectedValue))
+        addSubError(ApiValidationError(`object`, message?:"", field, rejectedValue))
     }
 
     private fun addValidationError(`object`: String, message: String) {
-        addSubError(ApiValidationError(`object`, message))
+        addSubError(ApiValidationError(`object`, message, null, null))
     }
 
     private fun addValidationError(fieldError: FieldError?) {
